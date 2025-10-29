@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinemaholic - Profile</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img class="logo-icon" src="images/favicon.png" alt="Logo">
+            <span class="logo-text">Cinemaholic</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="movies.html"><span class="material-symbols-outlined">movie</span> Movies</a></li>
+            <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
+            <li><a href="profile.html" class="active"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
+        </ul>
+        <button class="theme-toggle" id="themeToggle">
+            <span class="material-symbols-outlined">dark_mode</span>
+        </button>
+    </nav>
+
+    <main class="account-container">
+        <aside class="profile-sidebar">
+            <div class="profile-avatar">
+                <div class="avatar-placeholder">
+                    <span class="material-symbols-outlined">person</span>
+                </div>
+                <button class="avatar-edit">
+                    <span class="material-symbols-outlined">photo_camera</span>
+                </button>
+            </div>
+            <h2>John Doe</h2>
+            <p class="email">john.doe@cinemaholic.com</p>
+            <button class="sidebar-btn active">
+                <span class="material-symbols-outlined">settings</span> Account Settings
+            </button>
+            <button class="sidebar-btn logout">
+                <span class="material-symbols-outlined">logout</span> Log Out
+            </button>
+        </aside>
+
+        <section class="account-content">
+            <h1>Account Settings</h1>
+
+            <form class="account-form">
+                <div class="form-field">
+                    <label>Full Name</label>
+                    <div class="input-group">
+                        <span class="material-symbols-outlined">person</span>
+                        <input type="text" value="John Doe">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>Email Address</label>
+                    <div class="input-group">
+                        <span class="material-symbols-outlined">mail</span>
+                        <input type="email" value="john.doe@cinemaholic.com">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>Phone Number</label>
+                    <div class="input-group">
+                        <span class="material-symbols-outlined">call</span>
+                        <input type="tel" value="+1 234 567 8900">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>Profile Picture</label>
+                    <div class="upload-box">
+                        <span class="material-symbols-outlined upload-icon">photo_camera</span>
+                        <p>Click to upload or drag and drop</p>
+                        <small>PNG, JPG or GIF (max. 5MB)</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img class="logo-icon-footer" src="images/favicon.png" alt="Logo">
+                    <span class="footer-logo-text">Cinemaholic</span>
+                </div>
+                <p class="footer-description">Your ultimate destination for booking and watching the best movies online.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="movies.html">Movies</a></li>
+                    <li><a href="tickets.html">My Tickets</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Drama</a></li>
+                    <li><a href="#">Comedy</a></li>
+                    <li><a href="#">Sci-Fi</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <div class="footer-contact">
+                    <a href="mailto:contact@cinemaholic.com" class="contact-item">
+                        <span class="material-symbols-outlined">mail</span>
+                        contact@cinemaholic.com
+                    </a>
+                    <a href="tel:+78005553535" class="contact-item">
+                        <span class="material-symbols-outlined">call</span>
+                        +7 (800) 555-3535
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cinemaholic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script> 
+</body>
+</html>
