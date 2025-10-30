@@ -243,7 +243,6 @@ body.dark-mode .btn-secondary {
   max-width: 450px;
   height: auto;
   border-radius: 30px;
-  box-shadow: 0 20px 60px rgba(229, 57, 53, 0.3);
   display: block;
 }
 
@@ -648,6 +647,8 @@ body.dark-mode .footer-description {
 
 .footer-section h3 {
   font-size: 1.2rem;
+  display: flex;
+  justify-self: end;
   font-weight: 600;
   margin-bottom: 1.5rem;
   color: #000;
@@ -657,6 +658,7 @@ body.dark-mode .footer-description {
 body.dark-mode .footer-section h3 {
   color: #fff;
 }
+
 
 .footer-links {
   list-style: none;
@@ -677,7 +679,9 @@ body.dark-mode .footer-section h3 {
 
 .footer-contact {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: start;
+  justify-content: end;
   gap: 1rem;
 }
 
@@ -1808,4 +1812,16 @@ body.dark-mode .movies-container .movie-meta {
   .movies-container .movie-poster {
     height: 200px;
   }
+}
+
+.main-img.dark {
+  display: none;
+}
+
+body.dark-mode .main-img.light {
+  display: none;
+}
+
+body.dark-mode .main-img.dark {
+  display: block;
 }
