@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinemaholic</title>
+    <title>Movies - Cinemaholic</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
+   <!-- Navigation -->
     <nav>
         <div class="logo">
             <img class="logo-icon" src="images/favicon.png" alt="Logo">
             <span class="logo-text">Cinemaholic</span>
         </div>
         <ul class="nav-links">
-        <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
-        <li><a href="movies.html" class="active"><span class="material-symbols-outlined">movie</span> Movies</a></li>
-        <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
-        <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
+            <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="movies.html" class="active"><span class="material-symbols-outlined">movie</span> Movies</a></li>
+            <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
+            <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
         </ul>
-        <button class="theme-toggle" id="themeToggle">
-            <span class="material-symbols-outlined">dark_mode</span>
-        </button>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </nav>
 
 
@@ -260,10 +268,8 @@
             </div>
         </div>
     </section>
-</main>
-
-
-
+    
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-about">
@@ -274,7 +280,7 @@
                 <p class="footer-description">Your ultimate platform for booking movie tickets easily and enjoying the best cinema experience</p>
             </div>
             <div class="footer-section">
-                <h3>Contact</h3>
+                <h3 class="footer-section-title">Contact</h3>
                 <div class="footer-contact">
                     <a href="mailto:hello@cinemaholic.com" class="contact-item">
                         <span class="material-symbols-outlined">mail</span>

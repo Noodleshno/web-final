@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Cinemaholic</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+   <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img class="logo-icon" src="images/favicon.png" alt="Logo">
+            <span class="logo-text">Cinemaholic</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="movies.html" class="active"><span class="material-symbols-outlined">movie</span> Movies</a></li>
+            <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
+            <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Success Message -->
+    <div class="success-container">
+        <div class="success-content">
+            <div class="success-icon">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+
+            <h1 class="success-title">Payment Successful!</h1>
+            <p class="success-message">Your tickets have been booked. Check your email for confirmation.</p>
+
+            <div class="booking-details">
+                <div class="detail-row">
+                    <span class="detail-label">Movie</span>
+                    <span class="detail-value" id="movieTitle">The Last Symphony</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date & Time</span>
+                    <span class="detail-value" id="dateTime">Oct 28, 2025 - 7:30 PM</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Seats</span>
+                    <span class="detail-value" id="seats">D5, D6</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Paid</span>
+                    <span class="detail-value" id="total">$26.00</span>
+                </div>
+            </div>
+
+            <p class="countdown-text">Redirecting to movies in <span class="countdown-number" id="countdown">5</span> seconds...</p>
+
+            <div class="action-buttons">
+                <a href="movies.html" class="btn-secondary">Browse Movies</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img class="logo-icon-footer" src="images/favicon.png" alt="Logo">
+                    <span class="footer-logo-text">Cinemaholic</span>
+                </div>
+                <p class="footer-description">Your ultimate platform for booking movie tickets easily and enjoying the best cinema experience</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-section-title">Contact</h3>
+                <div class="footer-contact">
+                    <a href="mailto:hello@cinemaholic.com" class="contact-item">
+                        <span class="material-symbols-outlined">mail</span>
+                        contact@cinemaholic.com
+                    </a>
+                    <a href="tel:+15551234567" class="contact-item">
+                        <span class="material-symbols-outlined">call</span>
+                        +7 (800) 555-3535
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cinemaholic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script> 
+    <script src="js/success.js"></script>
+</body>
+</html>

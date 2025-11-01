@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Cinemaholic</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+   <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img class="logo-icon" src="images/favicon.png" alt="Logo">
+            <span class="logo-text">Cinemaholic</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="movies.html" class="active"><span class="material-symbols-outlined">movie</span> Movies</a></li>
+            <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
+            <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Payment -->
+    <div class="payment-container">
+        <a href="#" class="back-link" onclick="history.back(); return false;">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Back
+        </a>
+
+        <div class="payment-header">
+            <h1>Complete Your <span class="highlight">Payment</span></h1>
+        </div>
+
+        <div class="payment-content">
+            <!-- Payment Details -->
+            <div class="payment-section">
+                <h2 class="section-title">
+                    <span class="material-symbols-outlined">credit_card</span>
+                    Payment Details
+                </h2>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-input" placeholder="John Doe" id="cardName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" placeholder="1234 5678 9012 3456" id="cardNumber" maxlength="19" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" placeholder="MM/YY" id="expiryDate" maxlength="5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-input" placeholder="123" id="cvv" maxlength="3" required>
+                        </div>
+                    </div>
+
+                    <div class="security-note">
+                        <span class="material-symbols-outlined">lock</span>
+                        Your payment is secured with SSL encryption
+                    </div>
+
+                    <button type="submit" class="pay-btn">Pay Now</button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="payment-section order-summary">
+                <h2 class="section-title">Order Summary</h2>
+
+                <div class="movie-info">
+                    <img src="https://via.placeholder.com/80x120/e53935/ffffff?text=Movie" alt="Movie Poster" class="movie-poster-small" id="moviePosterSmall">
+                    <div class="movie-details">
+                        <h3 class="movie-title-small" id="movieTitleSmall">The Last Symphony</h3>
+                        <p class="movie-genre-small" id="movieGenreSmall">Drama, Music</p>
+                    </div>
+                </div>
+
+                <div class="booking-info">
+                    <div class="info-row">
+                        <span class="info-label">Date</span>
+                        <span class="info-value" id="bookingDate">Oct 28, 2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Time</span>
+                        <span class="info-value" id="bookingTime">7:30 PM</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Seats</span>
+                        <span class="info-value" id="bookingSeats">D5, D6</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tickets (2x)</span>
+                        <span class="info-value" id="ticketsPrice">$24.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Service Fee</span>
+                        <span class="info-value">$2.00</span>
+                    </div>
+                </div>
+
+        
+                <div class="total-row">
+                    <span>Total</span>
+                    <span class="total-amount" id="totalAmount">$26.00</span>
+                </div>
+    
+                
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img class="logo-icon-footer" src="images/favicon.png" alt="Logo">
+                    <span class="footer-logo-text">Cinemaholic</span>
+                </div>
+                <p class="footer-description">Your ultimate platform for booking movie tickets easily and enjoying the best cinema experience</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-section-title">Contact</h3>
+                <div class="footer-contact">
+                    <a href="mailto:hello@cinemaholic.com" class="contact-item">
+                        <span class="material-symbols-outlined">mail</span>
+                        contact@cinemaholic.com
+                    </a>
+                    <a href="tel:+15551234567" class="contact-item">
+                        <span class="material-symbols-outlined">call</span>
+                        +7 (800) 555-3535
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cinemaholic. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+   <script src="js/script.js"></script> 
+   <script src="js/payment.js"></script>
+</body>
+</html>
