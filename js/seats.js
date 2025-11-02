@@ -1,12 +1,8 @@
-// seats.js
-
-// Seat selection functionality
 const TICKET_PRICE = 12;
 const ROWS = 8;
 const SEATS_PER_ROW = 10;
 const ROW_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-// Randomly taken seats for demonstration
 const takenSeats = [
     'A4', 'A5', 'B3', 'B6', 'C4', 'C5', 'D7', 'D8', 
     'E2', 'F5', 'F6', 'G3', 'G4', 'G8'
@@ -14,7 +10,6 @@ const takenSeats = [
 
 let selectedSeats = [];
 
-// Generate seats
 const seatsGrid = document.getElementById('seatsGrid');
 
 if (seatsGrid) {
@@ -83,12 +78,10 @@ function updateSummary() {
     }
 }
 
-// Get movie title from URL
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie');
 const showtime = urlParams.get('showtime');
 
-// Movie data
 const movieTitles = {
     'inception': 'Inception',
     'shawshank': 'The Shawshank Redemption',
@@ -100,18 +93,15 @@ const movieTitles = {
     'godfather': 'The Godfather'
 };
 
-// Update movie title
 const movieTitleEl = document.getElementById('movieTitle');
 if (movieTitleEl && movieId && movieTitles[movieId]) {
     movieTitleEl.textContent = movieTitles[movieId];
 }
 
-// Confirm booking
 const confirmBtn = document.getElementById('confirmBtn');
 if (confirmBtn) {
     confirmBtn.addEventListener('click', () => {
         if (selectedSeats.length > 0) {
-            // Redirect to payment page with booking details
             const seatsString = selectedSeats.sort().join(',');
             window.location.href = `payment.html?movie=${movieId}&showtime=${encodeURIComponent(showtime || '')}&seats=${encodeURIComponent(seatsString)}`;
         }

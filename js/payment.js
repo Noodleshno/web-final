@@ -1,15 +1,10 @@
-// payment.js
-
 const TICKET_PRICE = 12;
 const SERVICE_FEE = 2;
-
-// Get booking data from URL
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie');
 const showtime = urlParams.get('showtime');
 const seats = urlParams.get('seats');
 
-// Movie data
 const movieData = {
     'inception': {
         title: 'Inception',
@@ -53,23 +48,19 @@ const movieData = {
     }
 };
 
-// Load booking information
 if (movieId && movieData[movieId]) {
     const movie = movieData[movieId];
     
-    // Update movie info
     document.getElementById('movieTitleSmall').textContent = movie.title;
     document.getElementById('movieGenreSmall').textContent = movie.genres;
     document.getElementById('moviePosterSmall').src = movie.poster;
     document.getElementById('moviePosterSmall').alt = movie.title;
 }
 
-// Update showtime
 if (showtime) {
     document.getElementById('bookingTime').textContent = showtime;
 }
 
-// Update seats and calculate price
 if (seats) {
     const seatArray = seats.split(',');
     const seatCount = seatArray.length;
@@ -82,19 +73,16 @@ if (seats) {
     document.getElementById('ticketsPrice').textContent = `$${ticketsTotal.toFixed(2)}`;
     document.getElementById('totalAmount').textContent = `$${grandTotal.toFixed(2)}`;
     
-    // Update ticket count
     const ticketsLabel = document.querySelector('.info-row:nth-child(4) .info-label');
     if (ticketsLabel) {
         ticketsLabel.textContent = `Tickets (${seatCount}x)`;
     }
 }
 
-// Set current date
 const today = new Date();
 const options = { year: 'numeric', month: 'short', day: 'numeric' };
 document.getElementById('bookingDate').textContent = today.toLocaleDateString('en-US', options);
 
-// Card number formatting
 const cardNumberInput = document.getElementById('cardNumber');
 cardNumberInput.addEventListener('input', (e) => {
     let value = e.target.value.replace(/\s/g, '');
@@ -102,7 +90,6 @@ cardNumberInput.addEventListener('input', (e) => {
     e.target.value = formattedValue;
 });
 
-// Expiry date formatting
 const expiryDateInput = document.getElementById('expiryDate');
 expiryDateInput.addEventListener('input', (e) => {
     let value = e.target.value.replace(/\D/g, '');
@@ -112,13 +99,11 @@ expiryDateInput.addEventListener('input', (e) => {
     e.target.value = value;
 });
 
-// CVV - only numbers
 const cvvInput = document.getElementById('cvv');
 cvvInput.addEventListener('input', (e) => {
     e.target.value = e.target.value.replace(/\D/g, '');
 });
 
-// Form submission - переход на success.html
 const paymentForm = document.getElementById('paymentForm');
 paymentForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -128,7 +113,6 @@ paymentForm.addEventListener('submit', (e) => {
     const expiryDate = document.getElementById('expiryDate').value;
     const cvv = document.getElementById('cvv').value;
     
-    // Basic validation
     if (!cardName || !cardNumber || !expiryDate || !cvv) {
         alert('Please fill in all payment details');
         return;
@@ -144,16 +128,13 @@ paymentForm.addEventListener('submit', (e) => {
         return;
     }
     
-    // Success message
     const movieTitle = document.getElementById('movieTitleSmall').textContent;
     const bookingSeats = document.getElementById('bookingSeats').textContent;
     const bookingTime = document.getElementById('bookingTime').textContent;
     const bookingDateText = document.getElementById('bookingDate').textContent;
     const total = document.getElementById('totalAmount').textContent;
     
-    // Combine date and time
     const dateTime = `${bookingDateText} - ${bookingTime}`;
     
-    // Redirect to success page with booking details
     window.location.href = `success.html?movie=${encodeURIComponent(movieTitle)}&datetime=${encodeURIComponent(dateTime)}&seats=${encodeURIComponent(bookingSeats)}&total=${total}`;
 });

@@ -1,5 +1,3 @@
-// booking.js
-// Movie data storage
 const movieData = {
     'inception': {
         title: 'Inception',
@@ -75,15 +73,12 @@ const movieData = {
     }
 };
 
-// Get movie ID from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie');
 
-// Load movie data immediately
 if (movieId && movieData[movieId]) {
     const movie = movieData[movieId];
     
-    // Cache all elements first
     const posterEl = document.getElementById('moviePoster');
     const titleEl = document.getElementById('movieTitle');
     const ratingEl = document.getElementById('movieRating');
@@ -92,7 +87,6 @@ if (movieId && movieData[movieId]) {
     const synopsisEl = document.getElementById('movieSynopsis');
     const genreContainer = document.getElementById('genreTags');
     
-    // Update all content at once
     if (posterEl) {
         posterEl.src = movie.poster;
         posterEl.alt = movie.title;
@@ -103,7 +97,6 @@ if (movieId && movieData[movieId]) {
     if (yearEl) yearEl.textContent = movie.year;
     if (synopsisEl) synopsisEl.textContent = movie.synopsis;
     
-    // Update genres
     if (genreContainer) {
         genreContainer.innerHTML = '';
         movie.genres.forEach(genre => {
@@ -114,11 +107,9 @@ if (movieId && movieData[movieId]) {
         });
     }
     
-    // Update page title
     document.title = `${movie.title} - Book Tickets - Cinemaholic`;
 }
 
-// Showtime selection
 const showtimeBtns = document.querySelectorAll('.showtime-btn');
 let selectedShowtime = null;
 
@@ -132,12 +123,10 @@ if (showtimeBtns.length > 0) {
     });
 }
 
-// Book ticket button - переход на seats.html
 const bookBtn = document.querySelector('.book-ticket-btn');
 if (bookBtn) {
     bookBtn.addEventListener('click', () => {
         if (selectedShowtime) {
-            // Navigate to seat selection page
             window.location.href = `seats.html?movie=${movieId}&showtime=${encodeURIComponent(selectedShowtime)}`;
         } else {
             alert('Please select a showtime first!');

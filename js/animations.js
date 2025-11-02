@@ -1,10 +1,5 @@
-// jQuery Animations for Cinemaholic Website
-// Simplified and optimized - only essential animations
-
 $(document).ready(function() {
     
-    // ========== LOGO CLICK ANIMATION ==========
-    // Fullscreen overlay animation when logo is clicked
     
     const $logoIcon = $('.logo-icon');
     const $logo = $('.logo');
@@ -27,14 +22,12 @@ $(document).ready(function() {
         
         overlayExists = true;
         
-        // Close overlay on click
         $overlay.on('click', function(e) {
             if ($(e.target).hasClass('logo-overlay')) {
                 closeLogoOverlay($overlay);
             }
         });
         
-        // Close overlay on ESC key
         $(document).on('keydown', function(e) {
             if (e.key === 'Escape' && $overlay.hasClass('active')) {
                 closeLogoOverlay($overlay);
@@ -58,12 +51,10 @@ $(document).ready(function() {
         
         const $overlay = createLogoOverlay();
         
-        // Trigger animation
         setTimeout(function() {
             $overlay.addClass('active');
         }, 10);
         
-        // Auto close after 3 seconds
         setTimeout(function() {
             if ($overlay.hasClass('active')) {
                 closeLogoOverlay($overlay);
@@ -71,21 +62,17 @@ $(document).ready(function() {
         }, 3000);
     });
     
-    // Also make the whole logo clickable
     $logo.on('click', function(e) {
         if ($(e.target).hasClass('logo-icon') || $(e.target).closest('.logo-icon').length) {
-            return; // Already handled by logo-icon click
+            return; 
         }
         $logoIcon.trigger('click');
     });
     
-    // ========== SEARCH BAR ANIMATIONS ==========
-    // Enhanced animations for search bar
     
     const $searchBar = $('.search-bar');
     const $searchInput = $('.search-input');
     
-    // Add subtle animation on page load
     if ($searchBar.length) {
         $searchBar.css({
             opacity: 0,
@@ -96,7 +83,6 @@ $(document).ready(function() {
             $(this).css('transform', 'translateY(0)');
         });
         
-        // Enhanced focus effect
         $searchInput.on('focus', function() {
             $searchBar.addClass('focused');
         }).on('blur', function() {
@@ -104,12 +90,9 @@ $(document).ready(function() {
         });
     }
     
-    // ========== MINIMAL ESSENTIAL ANIMATIONS ==========
     
-    // Simple fade in for navigation (no delay to avoid glitches)
     $('nav').css('opacity', 0).animate({ opacity: 1 }, 300);
     
-    // Smooth hover effects for primary buttons (only essential)
     $('.btn-primary').hover(
         function() {
             $(this).css('transform', 'translateY(-2px)');
@@ -119,7 +102,6 @@ $(document).ready(function() {
         }
     );
     
-    // Smooth scroll for anchor links
     $('a[href^="#"]').on('click', function(e) {
         const target = $(this.getAttribute('href'));
         if (target.length) {
