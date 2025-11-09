@@ -1245,6 +1245,83 @@ body.dark-mode .upload-box small {
   color: #666;
 }
 
+/* Load More Button */
+.load-more-btn {
+  padding: 1rem 2.5rem;
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 2rem auto;
+  display: block;
+}
+
+.load-more-btn:hover:not(:disabled) {
+  background: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.3);
+}
+
+.load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+body.dark-mode .load-more-btn {
+  background: #e53935;
+}
+
+body.dark-mode .load-more-btn:hover:not(:disabled) {
+  background: #d32f2f;
+}
+
+/* Loading and Error Messages */
+.loading-message,
+.no-movies-message {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+body.dark-mode .loading-message,
+body.dark-mode .no-movies-message {
+  color: #aaa;
+}
+
+.loading-message .material-symbols-outlined,
+.no-movies-message .material-symbols-outlined {
+  font-size: 64px;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+body.dark-mode .loading-message .material-symbols-outlined,
+body.dark-mode .no-movies-message .material-symbols-outlined {
+  color: #666;
+}
+
+.no-movies-message p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.no-movies-message a {
+  color: #e53935;
+  text-decoration: underline;
+}
+
+body.dark-mode .no-movies-message a {
+  color: #ff6b6b;
+}
+
 #profilePreview {
   display: none;
   max-width: 200px;

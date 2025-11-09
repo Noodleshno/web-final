@@ -80,8 +80,10 @@ function updateSummary() {
 
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie');
+const imdbId = urlParams.get('imdbId');
 const showtime = urlParams.get('showtime');
 
+// Legacy movie titles for backward compatibility
 const movieTitles = {
     'inception': 'Inception',
     'shawshank': 'The Shawshank Redemption',
@@ -93,17 +95,47 @@ const movieTitles = {
     'godfather': 'The Godfather'
 };
 
-const movieTitleEl = document.getElementById('movieTitle');
-if (movieTitleEl && movieId && movieTitles[movieId]) {
-    movieTitleEl.textContent = movieTitles[movieId];
+// Get movie title from API if imdbId is provided
+async function loadMovieTitle() {
+    const movieTitleEl = document.getElementById('movieTitle');
+    if (!movieTitleEl) return;
+    
+    if (imdbId) {
+        // Try to get from API (config.js should be loaded before this)
+        if (typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
+            try {
+                const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbId}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.Response === 'True' && data.Title) {
+                    movieTitleEl.textContent = data.Title;
+                    return;
+                }
+            } catch (error) {
+                console.error('Error loading movie title:', error);
+            }
+        }
+        
+        // Fallback: use imdbId as title
+        movieTitleEl.textContent = 'Movie';
+    } else if (movieId && movieTitles[movieId]) {
+        movieTitleEl.textContent = movieTitles[movieId];
+    }
 }
+
+loadMovieTitle();
 
 const confirmBtn = document.getElementById('confirmBtn');
 if (confirmBtn) {
     confirmBtn.addEventListener('click', () => {
         if (selectedSeats.length > 0) {
             const seatsString = selectedSeats.sort().join(',');
-            window.location.href = `payment.html?movie=${movieId}&showtime=${encodeURIComponent(showtime || '')}&seats=${encodeURIComponent(seatsString)}`;
+            if (imdbId) {
+                window.location.href = `payment.html?imdbId=${imdbId}&showtime=${encodeURIComponent(showtime || '')}&seats=${encodeURIComponent(seatsString)}`;
+            } else {
+                window.location.href = `payment.html?movie=${movieId}&showtime=${encodeURIComponent(showtime || '')}&seats=${encodeURIComponent(seatsString)}`;
+            }
         }
     });
 }

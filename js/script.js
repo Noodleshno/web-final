@@ -47,101 +47,49 @@ if (hamburger && navLinks) {
     });
 }
 
+// Movie gallery functionality is now handled by movies.js
+// This code is disabled to avoid conflicts with the OMDb API integration
+// If you're not on the movies page, this code won't run anyway
 const movieGallery = document.querySelector('.movie-gallery');
 
-if (movieGallery) {
+// Only run legacy code if we're not on the movies page (which uses movies.js)
+// Check if we're on movies.html by checking if movies.js is loaded
+if (movieGallery && typeof window.loadInitialMovies === 'undefined') {
+    // Legacy code for other pages if needed
+    // This is kept for backward compatibility but won't run on movies.html
     const categoryTags = document.querySelectorAll('.category-tag');
     const movieCards = document.querySelectorAll('.movie-card');
 
-    const noMoviesMessage = document.createElement('div');
-    noMoviesMessage.className = 'no-movies-message';
-    noMoviesMessage.innerHTML = '<span class="material-symbols-outlined">movie_filter</span><p>Unfortunately, there are no movies available in this genre.</p>';
-    noMoviesMessage.style.display = 'none';
-
-    if (movieGallery.parentNode) {
-        movieGallery.parentNode.insertBefore(noMoviesMessage, movieGallery.nextSibling);
-    }
-
-    if (categoryTags.length > 0) {
+    if (categoryTags.length > 0 && movieCards.length > 0) {
         categoryTags.forEach(tag => {
             tag.addEventListener('click', () => {
                 categoryTags.forEach(t => t.classList.remove('active'));
                 tag.classList.add('active');
                 
                 const selectedCategory = tag.textContent.trim();
-                let visibleCount = 0;
                 
                 movieCards.forEach(card => {
-                    const movieGenre = card.querySelector('.movie-genre').textContent.trim();
+                    const movieGenre = card.querySelector('.movie-genre')?.textContent.trim();
                     
                     if (selectedCategory === 'All') {
                         card.style.display = 'flex';
-                        visibleCount++;
                     } else if (selectedCategory === 'Trending') {
                         const ratingElement = card.querySelector('.movie-rating');
                         if (ratingElement) {
                             const ratingText = ratingElement.textContent.trim();
                             const ratingMatch = ratingText.match(/[\d.]+/);
                             const rating = ratingMatch ? parseFloat(ratingMatch[0]) : 0;
-                            
-                            if (rating >= 9) {
-                                card.style.display = 'flex';
-                                visibleCount++;
-                            } else {
-                                card.style.display = 'none';
-                            }
+                            card.style.display = rating >= 9 ? 'flex' : 'none';
                         } else {
                             card.style.display = 'none';
                         }
                     } else if (movieGenre === selectedCategory) {
                         card.style.display = 'flex';
-                        visibleCount++;
                     } else {
                         card.style.display = 'none';
                     }
                 });
-                
-                if (visibleCount === 0) {
-                    noMoviesMessage.style.display = 'flex';
-                    movieGallery.style.display = 'none';
-                } else {
-                    noMoviesMessage.style.display = 'none';
-                    movieGallery.style.display = 'grid';
-                }
             });
         });
     }
-
-    const movieIdMap = {
-        'Inception': 'inception',
-        'The Shawshank Redemption': 'shawshank',
-        'The Dark Knight': 'dark-knight',
-        'Interstellar': 'interstellar',
-        'Pulp Fiction': 'pulp-fiction',
-        'The Matrix': 'matrix',
-        'Forrest Gump': 'forrest-gump',
-        'The Godfather': 'godfather'
-    };
-
-    if (movieCards.length > 0) {
-        movieCards.forEach(card => {
-            card.style.cursor = 'pointer';
-        });
-    }
-    
-    movieGallery.addEventListener('click', function(e) {
-        const card = e.target.closest('.movie-card');
-        
-        if (card) {
-            const titleElement = card.querySelector('.movie-title');
-            if (titleElement) {
-                const movieTitle = titleElement.textContent.trim();
-                const movieId = movieIdMap[movieTitle];
-                
-                if (movieId) {
-                    window.location.href = `booking.html?movie=${movieId}`;
-                }
-            }
-        }
-    });
 }

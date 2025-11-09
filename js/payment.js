@@ -2,9 +2,11 @@ const TICKET_PRICE = 12;
 const SERVICE_FEE = 2;
 const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie');
+const imdbId = urlParams.get('imdbId');
 const showtime = urlParams.get('showtime');
 const seats = urlParams.get('seats');
 
+// Legacy movie data for backward compatibility
 const movieData = {
     'inception': {
         title: 'Inception',
@@ -48,14 +50,51 @@ const movieData = {
     }
 };
 
-if (movieId && movieData[movieId]) {
-    const movie = movieData[movieId];
+// Load movie data from API if imdbId is provided
+async function loadMovieData() {
+    const titleEl = document.getElementById('movieTitleSmall');
+    const genreEl = document.getElementById('movieGenreSmall');
+    const posterEl = document.getElementById('moviePosterSmall');
     
-    document.getElementById('movieTitleSmall').textContent = movie.title;
-    document.getElementById('movieGenreSmall').textContent = movie.genres;
-    document.getElementById('moviePosterSmall').src = movie.poster;
-    document.getElementById('moviePosterSmall').alt = movie.title;
+    if (!titleEl || !genreEl || !posterEl) return;
+    
+    if (imdbId) {
+        // Try to get from API (config.js should be loaded before this)
+        if (typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
+            try {
+                const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbId}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.Response === 'True') {
+                    titleEl.textContent = data.Title || 'Movie';
+                    genreEl.textContent = (data.Genre && data.Genre !== 'N/A') ? data.Genre : 'Movie';
+                    posterEl.src = (data.Poster && data.Poster !== 'N/A') ? data.Poster : 'https://via.placeholder.com/150x200?text=No+Poster';
+                    posterEl.alt = data.Title || 'Movie';
+                    posterEl.onerror = function() {
+                        this.src = 'https://via.placeholder.com/150x200?text=No+Poster';
+                    };
+                    return;
+                }
+            } catch (error) {
+                console.error('Error loading movie data:', error);
+            }
+        }
+        
+        // Fallback
+        titleEl.textContent = 'Movie';
+        genreEl.textContent = 'Movie';
+        posterEl.src = 'https://via.placeholder.com/150x200?text=No+Poster';
+    } else if (movieId && movieData[movieId]) {
+        const movie = movieData[movieId];
+        titleEl.textContent = movie.title;
+        genreEl.textContent = movie.genres;
+        posterEl.src = movie.poster;
+        posterEl.alt = movie.title;
+    }
 }
+
+loadMovieData();
 
 if (showtime) {
     document.getElementById('bookingTime').textContent = showtime;
@@ -79,9 +118,13 @@ if (seats) {
     }
 }
 
+// Set booking date (default to today, but can be modified for future dates)
+// For now, we'll use a date 3 days from today as default show date
 const today = new Date();
+const showDate = new Date(today);
+showDate.setDate(today.getDate() + 3); // Show date is 3 days from today
 const options = { year: 'numeric', month: 'short', day: 'numeric' };
-document.getElementById('bookingDate').textContent = today.toLocaleDateString('en-US', options);
+document.getElementById('bookingDate').textContent = showDate.toLocaleDateString('en-US', options);
 
 const cardNumberInput = document.getElementById('cardNumber');
 cardNumberInput.addEventListener('input', (e) => {
@@ -133,6 +176,28 @@ paymentForm.addEventListener('submit', (e) => {
     const bookingTime = document.getElementById('bookingTime').textContent;
     const bookingDateText = document.getElementById('bookingDate').textContent;
     const total = document.getElementById('totalAmount').textContent;
+    const movieGenre = document.getElementById('movieGenreSmall').textContent;
+    const moviePoster = document.getElementById('moviePosterSmall').src;
+    
+    // Save ticket to localStorage
+    const ticket = {
+        id: Date.now().toString(),
+        movieTitle: movieTitle,
+        movieGenre: movieGenre,
+        moviePoster: moviePoster,
+        date: bookingDateText,
+        time: bookingTime,
+        seats: bookingSeats,
+        total: total,
+        imdbId: imdbId || null,
+        movieId: movieId || null,
+        bookingDate: new Date().toISOString()
+    };
+    
+    // Get existing tickets
+    const existingTickets = JSON.parse(localStorage.getItem('userTickets') || '[]');
+    existingTickets.push(ticket);
+    localStorage.setItem('userTickets', JSON.stringify(existingTickets));
     
     const dateTime = `${bookingDateText} - ${bookingTime}`;
     
