@@ -3632,6 +3632,10 @@ body.dark-mode .btn-secondary:hover {
     font-size: 0.9rem;
     padding: 0.8rem 1rem;
   }
+  .nav-links.active ~ .logo .logo-text,
+  body:has(.nav-links.active) .logo-text {
+    display: none;
+  }
 
 }
 
