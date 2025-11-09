@@ -398,6 +398,49 @@ body.dark-mode .hero-subtitle {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+
+.save-btn {
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  background: #e53935;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.save-btn.save-success {
+  background: #43a047 !important; 
+  box-shadow: 0 8px 20px rgba(67,160,71,0.18);
+  transform: scale(0.98);
+}
+
+.save-btn .save-check {
+  display: inline-block;
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease;
+}
+
+.save-btn.save-success .save-check {
+  transform: scale(1);
+  opacity: 1;
+}
+
+@keyframes savePop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.save-btn.save-success .save-check {
+  animation: savePop 350ms ease;
+}
+
 .btn:hover .material-symbols-outlined {
   transform: translateX(5px) scale(1.1);
 }
@@ -3045,7 +3088,7 @@ body.dark-mode .btn-secondary:hover {
     color: #fff;
 }
 
-/* Authentication */
+
 .auth-container {
   width: 100%;
   max-width: 1200px;

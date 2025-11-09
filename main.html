@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies - Cinemaholic</title>
+    <title>Cinemaholic</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
@@ -14,8 +14,8 @@
             <span class="logo-text">Cinemaholic</span>
         </div>
         <ul class="nav-links">
-            <li><a href="main.html"><span class="material-symbols-outlined">home</span> Home</a></li>
-            <li><a href="movies.html" class="active"><span class="material-symbols-outlined">movie</span> Movies</a></li>
+            <li><a href="main.html" class="active"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="movies.html"><span class="material-symbols-outlined">movie</span> Movies</a></li>
             <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
             <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
         </ul>
@@ -31,13 +31,28 @@
         </div>
     </nav>
 
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Every ticket starts <span class="highlight">a story 🎬</span>
+            </h1>
+            <p class="hero-subtitle">
+                Discover films that move you — book your seat, grab the popcorn🍿, and live every moment like it’s your first 
+            </p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                    See What’s On
+                </a>
+                
+            </div>
+        </div>
+        <div class="main-image">
+            <img src="images/ticket.png" alt="Cinema Experience" class="main-img">
+        </div>
 
-<main class="movies-container">
-    <div class="movies-header">
-        <h1>All Movies</h1>
-        <p class="movies-subtitle">Discover your next favorite movie from our extensive collection</p>
-    </div>
-    
+    </section>
+
 
     <section class="search-section">
         <div class="search-bar">
@@ -58,12 +73,37 @@
         <div class="movie-gallery" id="movieGallery"></div>
         
         <div class="load-more-container" style="text-align: center; margin: 2rem 0;">
-            <button id="loadMoreBtn" class="load-more-btn" style="display: none;">
-                Load More Movies
-            </button>
+            <button id="loadMoreBtn" class="load-more-btn" style="display: none;">Load More Movies</button>
         </div>
     </section>
-    
+
+    <section class="features-section">
+        <h2 class="features-title">Why <span class="highlight">Cinemaholic</span>?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-symbols-outlined">bolt</span>
+                </div>
+                <h3 class="feature-title">Instant Booking</h3>
+                <p class="feature-description">Book your tickets in seconds with our streamlined checkout process</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-symbols-outlined">favorite</span>
+                </div>
+                <h3 class="feature-title">Curated Collection</h3>
+                <p class="feature-description">Handpicked movies across all genres to match your taste</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <span class="material-symbols-outlined">shield</span>
+                </div>
+                <h3 class="feature-title">Secure Payments</h3>
+                <p class="feature-description">Your transactions are protected with industry-standard encryption</p>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content">
             <div class="footer-about">

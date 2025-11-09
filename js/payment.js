@@ -59,7 +59,7 @@ async function loadMovieData() {
     if (imdbId) {
         if (typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
             try {
-                const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbId}`;
+                const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbId}&type=movie`;
                 const response = await fetch(url);
                 const data = await response.json();
                 

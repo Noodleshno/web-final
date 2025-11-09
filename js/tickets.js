@@ -63,7 +63,7 @@ function isUpcomingTicket(ticket) {
 async function loadMovieDetailsForTicket(ticket) {
     if (ticket.imdbId && typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
         try {
-            const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${ticket.imdbId}`;
+            const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${ticket.imdbId}&type=movie`;
             const response = await fetch(url);
             const data = await response.json();
             
@@ -221,7 +221,17 @@ async function loadTickets() {
             const ticketHTML = createTicketCard(ticket, true);
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = ticketHTML;
-            upcomingSection.appendChild(tempDiv.firstElementChild);
+            const appended = tempDiv.firstElementChild;
+            if (appended) {
+                appended.dataset.ticketId = ticket.id || '';
+                appended.dataset.ticketTotal = ticket.total || '';
+                appended.dataset.ticketSeats = ticket.seats || '';
+                appended.dataset.ticketDate = ticket.date || '';
+                appended.dataset.ticketTime = ticket.time || '';
+                appended.dataset.imdbId = ticket.imdbId || '';
+                appended.dataset.movieTitle = ticket.title || '';
+            }
+            upcomingSection.appendChild(appended);
         });
     } else {
         const noTicketsMsg = document.createElement('p');
@@ -235,7 +245,17 @@ async function loadTickets() {
             const ticketHTML = createTicketCard(ticket, false);
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = ticketHTML;
-            historySection.appendChild(tempDiv.firstElementChild);
+            const appended = tempDiv.firstElementChild;
+            if (appended) {
+                appended.dataset.ticketId = ticket.id || '';
+                appended.dataset.ticketTotal = ticket.total || '';
+                appended.dataset.ticketSeats = ticket.seats || '';
+                appended.dataset.ticketDate = ticket.date || '';
+                appended.dataset.ticketTime = ticket.time || '';
+                appended.dataset.imdbId = ticket.imdbId || '';
+                appended.dataset.movieTitle = ticket.title || '';
+            }
+            historySection.appendChild(appended);
         });
     } else {
         const noHistoryMsg = document.createElement('p');
@@ -246,6 +266,23 @@ async function loadTickets() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadTickets();
+    loadTickets();
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.view-ticket-btn');
+        if (!btn) return;
+
+        const card = btn.closest('.ticket-card');
+        if (!card) return;
+        const movieTitle = card.dataset.movieTitle || card.querySelector('h3')?.textContent || 'Movie';
+        const date = card.dataset.ticketDate || card.querySelector('.detail-item .detail-value')?.textContent || '';
+        const time = card.dataset.ticketTime || Array.from(card.querySelectorAll('.detail-item')).find(d => d.querySelector('.detail-label')?.textContent === 'Time')?.querySelector('.detail-value')?.textContent || '';
+        const seats = card.dataset.ticketSeats || Array.from(card.querySelectorAll('.detail-item')).find(d => d.querySelector('.detail-label')?.textContent === 'Seats')?.querySelector('.detail-value')?.textContent || '';
+        const total = card.dataset.ticketTotal || '';
+
+        const dateTime = `${date}${time ? ' - ' + time : ''}`;
+
+        const url = `success.html?movie=${encodeURIComponent(movieTitle)}&datetime=${encodeURIComponent(dateTime)}&seats=${encodeURIComponent(seats)}&total=${encodeURIComponent(total)}`;
+        window.location.href = url;
+    });
 });
 

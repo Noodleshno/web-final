@@ -87,7 +87,7 @@ async function getMovieDetailsFromAPI(imdbID) {
     }
     
     try {
-        const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbID}&plot=full`;
+    const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbID}&type=movie&plot=full`;
         const response = await fetch(url);
         
         if (!response.ok) {

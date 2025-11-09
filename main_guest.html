@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tickets - Cinemaholic</title>
+    <title>Cinemaholic (Guest)</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
@@ -14,10 +14,10 @@
             <span class="logo-text">Cinemaholic</span>
         </div>
         <ul class="nav-links">
-            <li><a href="main.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="main_guest.html" class="active"><span class="material-symbols-outlined">home</span> Home</a></li>
             <li><a href="movies.html"><span class="material-symbols-outlined">movie</span> Movies</a></li>
-            <li><a href="tickets.html" class="active"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
-            <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
+            <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
+            <li><a href="auth.html"><span class="material-symbols-outlined">account_circle</span> Login</a></li>
         </ul>
         <div class="nav-right">
             <button class="theme-toggle" id="themeToggle">
@@ -30,26 +30,31 @@
             </div>
         </div>
     </nav>
-    <main class="tickets-container">
-        <div class="tickets-header">
-            <h1>My Tickets</h1>
-            <p class="tickets-subtitle">View your upcoming shows and booking history</p>
+
+    
+
+    <section class="search-section">
+        <div class="search-bar">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" class="search-input" placeholder="Search movies, genres, actors…">
+        </div>
+        <div class="categories">
+            <span class="category-tag active">All</span>
+            <span class="category-tag">Trending</span>
+            <span class="category-tag">Action</span>
+            <span class="category-tag">Drama</span>
+            <span class="category-tag">Comedy</span>
+            <span class="category-tag">Horror</span>
+            <span class="category-tag">Romance</span>
+            <span class="category-tag">Sci-Fi</span>
         </div>
 
-        <section class="tickets-section">
-            <h2 class="section-title">
-                <span class="material-symbols-outlined">confirmation_number</span>
-                Upcoming Shows
-            </h2>
-        </section>
+    <div class="movie-gallery" id="movieGallery"></div>
 
-        <section class="tickets-section">
-            <h2 class="section-title">
-                <span class="material-symbols-outlined">history</span>
-                Booking History
-            </h2>
-        </section>
-    </main>
+    <div class="load-more-container" style="text-align: center; margin: 2rem 0;">
+        <button id="loadMoreBtn" class="load-more-btn" style="display: none;">Load More Movies</button>
+    </div>
+    </section>
 
     <footer>
         <div class="footer-content">
@@ -79,10 +84,11 @@
         </div>
     </footer>
 
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/config.js"></script>
     <script src="js/script.js"></script>
     <script src="js/animations.js"></script>
-    <script src="js/tickets.js"></script>
+    <script src="js/movies.js"></script>
 </body>
 </html>

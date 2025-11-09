@@ -1,4 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+    function sanitizeAbsoluteImagePaths() {
+        try {
+            const imgs = Array.from(document.querySelectorAll('img'));
+            imgs.forEach((img) => {
+                const src = img.getAttribute('src') || '';
+                if (/^[A-Za-z]:\\/.test(src) || src.startsWith('file:') || src.startsWith('\\\\')) {
+                    console.info('Sanitized absolute image src on auth page:', src);
+                    img.setAttribute('src', 'images/favicon.png');
+                }
+            });
+        } catch (e) {
+            console.debug('sanitizeAbsoluteImagePaths failed', e);
+        }
+    }
+    sanitizeAbsoluteImagePaths();
     const MODE = {
         SIGN_IN: 'signin',
         SIGN_UP: 'signup'
@@ -6,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const USERS_STORAGE_KEY = 'cineholicUsers';
     const CURRENT_USER_KEY = 'cineholicCurrentUser';
-    const PROFILE_KEY = 'userProfile';
+    const PROFILES_STORAGE_KEY = 'cineholicProfiles'; 
 
     const authCard = document.querySelector('.auth-card');
     const modeButtons = document.querySelectorAll('.auth-toggle-btn');
@@ -49,26 +64,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function ensureProfileSeed(user) {
-        try {
-            const profileRaw = localStorage.getItem(PROFILE_KEY);
-            if (!profileRaw) {
-                localStorage.setItem(PROFILE_KEY, JSON.stringify({
-                    fullName: user.fullName,
-                    email: user.email,
-                    phone: '',
-                    profilePicture: null
-                }));
-                return;
-            }
+        try {
+            const profilesRaw = localStorage.getItem(PROFILES_STORAGE_KEY);
+            let profiles = {};
+            try { profiles = profilesRaw ? JSON.parse(profilesRaw) : {}; } catch (e) { profiles = {}; }
 
-            const profile = JSON.parse(profileRaw);
-            if (profile && (!profile.email || profile.email === 'john.doe@cinemaholic.com')) {
-                localStorage.setItem(PROFILE_KEY, JSON.stringify({
-                    ...profile,
-                    fullName: user.fullName,
-                    email: user.email
-                }));
-            }
+            const emailKey = (user && user.email) ? user.email.toLowerCase() : null;
+            if (!emailKey) return;
+
+            const existing = profiles[emailKey] || null;
+
+            const merged = {
+                fullName: user.fullName || (existing && existing.fullName) || '',
+                email: user.email || (existing && existing.email) || '',
+                phone: user.phone || (existing && existing.phone) || '',
+                profilePicture: (existing && existing.profilePicture) || null
+            };
+
+            profiles[emailKey] = merged;
+            localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(profiles));
         } catch (error) {
             console.warn('Unable to sync profile stub', error);
         }
@@ -137,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 authCardDescription.textContent = 'Switch tabs anytime to sign in if you already have an account.';
             } else {
                 authCardTitle.textContent = 'Welcome back to Cinemaholic';
-                authCardDescription.textContent = 'Use your email and password to access your saved tickets and profile. Need an account? Switch to sign up.';
+                authCardDescription.textContent = 'Need an account? Switch to sign up.';
             }
         }
     }
@@ -160,10 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
         displayMessage();
         clearErrors(signUpForm);
 
-        const fullNameInput = document.getElementById('signupFullName');
-        const emailInput = document.getElementById('signupEmail');
-        const passwordInput = document.getElementById('signupPassword');
-        const confirmPasswordInput = document.getElementById('signupConfirmPassword');
+    const fullNameInput = document.getElementById('signupFullName');
+    const emailInput = document.getElementById('signupEmail');
+    const phoneInput = document.getElementById('signupPhone');
+    const passwordInput = document.getElementById('signupPassword');
+    const confirmPasswordInput = document.getElementById('signupConfirmPassword');
 
         let isValid = true;
 
@@ -219,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newUser = {
             fullName,
             email,
+            phone: phoneInput ? phoneInput.value.trim() : '',
             password,
             createdAt: now,
             updatedAt: now
@@ -233,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         signUpForm.reset();
 
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'main.html';
         }, 1400);
     }
 
@@ -288,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayMessage('success', 'Welcome back! Taking you to the homepage...');
 
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'main.html';
         }, 1100);
     }
 
@@ -322,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayMessage('info', 'Continuing as guest...');
 
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'main_guest.html';
         }, 600);
     }
 
@@ -357,9 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
     signUpForm.addEventListener('submit', handleSignUpSubmit);
     signInForm.addEventListener('submit', handleSignInSubmit);
     forgotPasswordBtn.addEventListener('click', handleForgotPassword);
-    guestAccessBtn.addEventListener('click', handleGuestAccess);
-
-    // Initialize default mode
+    guestAccessBtn.addEventListener('click', handleGuestAccess);
     const urlParams = new URLSearchParams(window.location.search);
     const initialMode = urlParams.get('mode');
     if (initialMode === MODE.SIGN_IN) {
