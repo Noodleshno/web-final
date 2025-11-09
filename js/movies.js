@@ -559,7 +559,7 @@ function createMovieCard(movie, container) {
     
     const poster = movie.Poster && movie.Poster !== 'N/A' 
         ? movie.Poster 
-        : 'https://via.placeholder.com/300x450?text=No+Poster';
+        : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoWcWg0E8pSjBNi0TtiZsqu8uD2PAr_K11DA&s';
     
     const rating = movie.imdbRating && movie.imdbRating !== 'N/A' 
         ? movie.imdbRating 
@@ -578,7 +578,7 @@ function createMovieCard(movie, container) {
         : 'No description available.';
     
     card.innerHTML = `
-        <img src="${poster}" alt="${movie.Title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+        <img src="${poster}" alt="${movie.Title}" class="movie-poster" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoWcWg0E8pSjBNi0TtiZsqu8uD2PAr_K11DA&s'">
         <div class="movie-info">
             <h3 class="movie-title">${movie.Title}</h3>
             <span class="movie-genre">${genre}</span>
@@ -611,10 +611,10 @@ function createMovieCardFromSearch(movie, container) {
     
     const poster = movie.Poster && movie.Poster !== 'N/A' 
         ? movie.Poster 
-        : 'https://via.placeholder.com/300x450?text=No+Poster';
+        : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoWcWg0E8pSjBNi0TtiZsqu8uD2PAr_K11DA&s';
     
     card.innerHTML = `
-        <img src="${poster}" alt="${movie.Title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+        <img src="${poster}" alt="${movie.Title}" class="movie-poster" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoWcWg0E8pSjBNi0TtiZsqu8uD2PAr_K11DA&s'">
         <div class="movie-info">
             <h3 class="movie-title">${movie.Title}</h3>
             <span class="movie-genre">Movie</span>
