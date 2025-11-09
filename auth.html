@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinemaholic — Sign In & Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img class="logo-icon" src="images/favicon.png" alt="Logo">
+            <span class="logo-text">Cinemaholic</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="movies.html"><span class="material-symbols-outlined">movie</span> Movies</a></li>
+            <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
+            <li><a href="profile.html"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="auth-container">
+        <section class="auth-intro">
+            <h1 class="auth-title">Every ticket starts a story</h1>
+            <p class="auth-subtitle">Sign in or create an account to keep your favourite movies and tickets in one place.</p>
+        </section>
+        <section class="auth-card" data-mode="signup">
+            <div class="auth-card-header">
+                <h2 class="auth-card-title">Create your Cinemaholic account</h2>
+                <p class="auth-card-description">Switch tabs anytime to sign in if you already have an account.</p>
+            </div>
+            <div class="auth-toggle" role="tablist" aria-label="Toggle between sign in and sign up">
+                <button type="button" class="auth-toggle-btn" data-mode="signin" role="tab" aria-selected="false">
+                    Sign In
+                </button>
+                <button type="button" class="auth-toggle-btn active" data-mode="signup" role="tab" aria-selected="true">
+                    Sign Up
+                </button>
+            </div>
+
+            <div class="auth-message" id="authMessage" role="alert" aria-live="assertive"></div>
+
+            <form id="signUpForm" class="auth-form active" novalidate>
+                <div class="form-field">
+                    <label for="signupFullName">Full Name</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined">badge</span>
+                        <input id="signupFullName" name="fullName" type="text" placeholder="John Doe" autocomplete="name" required>
+                    </div>
+                    <p class="input-error" data-error-for="signupFullName"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="signupEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined">mail</span>
+                        <input id="signupEmail" name="email" type="email" placeholder="your@email.com" autocomplete="email" required>
+                    </div>
+                    <p class="input-error" data-error-for="signupEmail"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="signupPassword">Password</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined">lock</span>
+                        <input id="signupPassword" name="password" type="password" placeholder="Create a password" autocomplete="new-password" required minlength="6">
+                        <button type="button" class="password-toggle" data-target="signupPassword" aria-label="Show password">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                    <p class="input-error" data-error-for="signupPassword"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined">lock_reset</span>
+                        <input id="signupConfirmPassword" name="confirmPassword" type="password" placeholder="Repeat password" autocomplete="new-password" required>
+                        <button type="button" class="password-toggle" data-target="signupConfirmPassword" aria-label="Show password">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                    <p class="input-error" data-error-for="signupConfirmPassword"></p>
+                </div>
+
+                <button type="submit" class="primary-btn">Create Account</button>
+
+                <p class="switch-hint">Already have an account?
+                    <button type="button" class="hint-link" data-action="switch-to-signin">Sign in</button>
+                </p>
+            </form>
+
+            <form id="signInForm" class="auth-form" novalidate hidden>
+                <div class="form-field">
+                    <label for="signinEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined">mail</span>
+                        <input id="signinEmail" name="email" type="email" placeholder="your@email.com" autocomplete="email" required>
+                    </div>
+                    <p class="input-error" data-error-for="signinEmail"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="signinPassword">Password</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined">lock</span>
+                        <input id="signinPassword" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" data-target="signinPassword" aria-label="Show password">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                    <p class="input-error" data-error-for="signinPassword"></p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="inline-link" id="forgotPasswordBtn">Forgot password?</button>
+                </div>
+
+                <button type="submit" class="primary-btn">Sign In</button>
+
+                <p class="switch-hint">Don’t have an account yet?
+                    <button type="button" class="hint-link" data-action="switch-to-signup">Sign up</button>
+                </p>
+            </form>
+        </section>
+
+        <div class="guest-link">
+            <button type="button" id="guestAccessBtn">Continue as Guest →</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img class="logo-icon-footer" src="images/favicon.png" alt="Cinemaholic logo">
+                    <span class="footer-logo-text">Cinemaholic</span>
+                </div>
+                <p class="footer-description">Your ultimate platform for booking movie tickets easily and enjoying the best cinema experience</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-section-title">Contact</h3>
+                <div class="footer-contact">
+                    <a href="mailto:hello@cinemaholic.com" class="contact-item">
+                        <span class="material-symbols-outlined">mail</span>
+                        contact@cinemaholic.com
+                    </a>
+                    <a href="tel:+77777777777" class="contact-item">
+                        <span class="material-symbols-outlined">call</span>
+                        +7 777 777 7777
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cinemaholic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
