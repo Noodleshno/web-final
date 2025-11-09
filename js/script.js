@@ -47,16 +47,9 @@ if (hamburger && navLinks) {
     });
 }
 
-// Movie gallery functionality is now handled by movies.js
-// This code is disabled to avoid conflicts with the OMDb API integration
-// If you're not on the movies page, this code won't run anyway
 const movieGallery = document.querySelector('.movie-gallery');
 
-// Only run legacy code if we're not on the movies page (which uses movies.js)
-// Check if we're on movies.html by checking if movies.js is loaded
 if (movieGallery && typeof window.loadInitialMovies === 'undefined') {
-    // Legacy code for other pages if needed
-    // This is kept for backward compatibility but won't run on movies.html
     const categoryTags = document.querySelectorAll('.category-tag');
     const movieCards = document.querySelectorAll('.movie-card');
 

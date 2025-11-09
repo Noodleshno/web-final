@@ -83,7 +83,6 @@ const movieId = urlParams.get('movie');
 const imdbId = urlParams.get('imdbId');
 const showtime = urlParams.get('showtime');
 
-// Legacy movie titles for backward compatibility
 const movieTitles = {
     'inception': 'Inception',
     'shawshank': 'The Shawshank Redemption',
@@ -95,13 +94,11 @@ const movieTitles = {
     'godfather': 'The Godfather'
 };
 
-// Get movie title from API if imdbId is provided
 async function loadMovieTitle() {
     const movieTitleEl = document.getElementById('movieTitle');
     if (!movieTitleEl) return;
     
     if (imdbId) {
-        // Try to get from API (config.js should be loaded before this)
         if (typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
             try {
                 const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbId}`;
@@ -117,7 +114,6 @@ async function loadMovieTitle() {
             }
         }
         
-        // Fallback: use imdbId as title
         movieTitleEl.textContent = 'Movie';
     } else if (movieId && movieTitles[movieId]) {
         movieTitleEl.textContent = movieTitles[movieId];

@@ -1,7 +1,3 @@
-// Tickets Management
-// Load and display user tickets
-
-// Format date for display
 function formatTicketDate(dateString) {
     try {
         const date = new Date(dateString);
@@ -11,17 +7,14 @@ function formatTicketDate(dateString) {
     }
 }
 
-// Parse date from various formats
 function parseTicketDate(dateString) {
     if (!dateString) return null;
     
-    // Try ISO format first
     let date = new Date(dateString);
     if (!isNaN(date.getTime())) {
         return date;
     }
     
-    // Try "MMM DD, YYYY" format (e.g., "Oct 28, 2025")
     const months = {
         'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
         'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
@@ -40,7 +33,6 @@ function parseTicketDate(dateString) {
     return null;
 }
 
-// Check if ticket is upcoming (date is in the future)
 function isUpcomingTicket(ticket) {
     try {
         let ticketDate = null;
@@ -54,7 +46,6 @@ function isUpcomingTicket(ticket) {
         }
         
         if (!ticketDate || isNaN(ticketDate.getTime())) {
-            // If we can't parse the date, consider it completed (safe default)
             return false;
         }
         
@@ -62,7 +53,6 @@ function isUpcomingTicket(ticket) {
         now.setHours(0, 0, 0, 0);
         ticketDate.setHours(0, 0, 0, 0);
         
-        // Consider ticket upcoming if date is today or in the future
         return ticketDate >= now;
     } catch (e) {
         console.error('Error checking if ticket is upcoming:', e);
@@ -70,7 +60,6 @@ function isUpcomingTicket(ticket) {
     }
 }
 
-// Load movie details from API if imdbId is available
 async function loadMovieDetailsForTicket(ticket) {
     if (ticket.imdbId && typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
         try {
@@ -90,7 +79,6 @@ async function loadMovieDetailsForTicket(ticket) {
         }
     }
     
-    // Return existing ticket data or defaults
     return {
         title: ticket.movieTitle || 'Movie',
         genre: ticket.movieGenre || 'Movie',
@@ -98,7 +86,6 @@ async function loadMovieDetailsForTicket(ticket) {
     };
 }
 
-// Create ticket card HTML
 function createTicketCard(ticket, isUpcoming) {
     return `
         <div class="ticket-card ${isUpcoming ? 'upcoming' : 'completed'}">
@@ -151,11 +138,9 @@ function createTicketCard(ticket, isUpcoming) {
     `;
 }
 
-// Load and display tickets
 async function loadTickets() {
     const tickets = JSON.parse(localStorage.getItem('userTickets') || '[]');
     
-    // Sort tickets by date (upcoming first, then by date descending)
     tickets.sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
@@ -170,7 +155,6 @@ async function loadTickets() {
         return dateB - dateA;
     });
     
-    // Get sections
     const sections = document.querySelectorAll('.tickets-section');
     const upcomingSection = sections[0];
     const historySection = sections[1];
@@ -180,13 +164,11 @@ async function loadTickets() {
         return;
     }
     
-    // Clear existing ticket cards
     const existingUpcomingCards = upcomingSection.querySelectorAll('.ticket-card');
     existingUpcomingCards.forEach(card => card.remove());
     const existingHistoryCards = historySection.querySelectorAll('.ticket-card');
     existingHistoryCards.forEach(card => card.remove());
     
-    // Remove any existing containers or messages
     const existingContainers = upcomingSection.querySelectorAll('.tickets-container-inner, p');
     existingContainers.forEach(el => {
         if (el.classList.contains('tickets-container-inner') || el.tagName === 'P') {
@@ -201,7 +183,6 @@ async function loadTickets() {
     });
     
     if (tickets.length === 0) {
-        // Show message if no tickets
         const noUpcomingMsg = document.createElement('p');
         noUpcomingMsg.style.cssText = 'text-align: center; color: #777; padding: 2rem;';
         noUpcomingMsg.textContent = 'No upcoming tickets.';
@@ -214,7 +195,6 @@ async function loadTickets() {
         return;
     }
     
-    // Load movie details for all tickets
     const ticketsWithDetails = await Promise.all(tickets.map(async (ticket) => {
         const details = await loadMovieDetailsForTicket(ticket);
         return {
@@ -225,7 +205,6 @@ async function loadTickets() {
         };
     }));
     
-    // Separate upcoming and completed tickets
     const upcomingTickets = [];
     const completedTickets = [];
     
@@ -237,7 +216,6 @@ async function loadTickets() {
         }
     });
     
-    // Display upcoming tickets
     if (upcomingTickets.length > 0) {
         upcomingTickets.forEach(ticket => {
             const ticketHTML = createTicketCard(ticket, true);
@@ -252,7 +230,6 @@ async function loadTickets() {
         upcomingSection.appendChild(noTicketsMsg);
     }
     
-    // Display completed tickets
     if (completedTickets.length > 0) {
         completedTickets.forEach(ticket => {
             const ticketHTML = createTicketCard(ticket, false);
@@ -268,7 +245,6 @@ async function loadTickets() {
     }
 }
 
-// Initialize tickets page
 document.addEventListener('DOMContentLoaded', () => {
     loadTickets();
 });

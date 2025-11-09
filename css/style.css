@@ -1245,7 +1245,6 @@ body.dark-mode .upload-box small {
   color: #666;
 }
 
-/* Load More Button */
 .load-more-btn {
   padding: 1rem 2.5rem;
   background: #e53935;
@@ -1279,7 +1278,6 @@ body.dark-mode .load-more-btn:hover:not(:disabled) {
   background: #d32f2f;
 }
 
-/* Loading and Error Messages */
 .loading-message,
 .no-movies-message {
   text-align: center;

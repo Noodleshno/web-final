@@ -1,19 +1,13 @@
-// OMDb API Integration
-// API key is loaded from config.js
-
-// Cache for movie details to avoid multiple API calls
 const movieDetailsCache = {};
 
-// Current state
 let currentPage = 1;
 let currentSearchQuery = '';
 let currentGenre = '';
 let isLoading = false;
 let hasMoreMovies = true;
 let allMovies = [];
-let currentFilter = 'all'; // 'all', 'trending', 'genre'
+let currentFilter = 'all';
 
-// Genre mapping for OMDb API
 const GENRE_MAP = {
     'Action': 'action',
     'Drama': 'drama',
@@ -23,10 +17,8 @@ const GENRE_MAP = {
     'Sci-Fi': 'sci-fi'
 };
 
-// Get default popular movies for initial load
 const DEFAULT_SEARCH_TERMS = ['action', 'drama', 'comedy', 'sci-fi', 'thriller'];
 
-// Initialize movies page
 document.addEventListener('DOMContentLoaded', () => {
     const movieGallery = document.querySelector('.movie-gallery');
     const searchInput = document.querySelector('.search-input');
@@ -35,10 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!movieGallery) return;
     
-    // Load initial movies
     loadInitialMovies();
     
-    // Search functionality
     if (searchInput) {
         let searchTimeout;
         searchInput.addEventListener('input', (e) => {
@@ -49,18 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (query.length >= 2) {
                     searchMovies(query);
                 } else if (query.length === 0) {
-                    // Reset to "All" when search is cleared
                     const categoryTags = document.querySelectorAll('.category-tag');
                     categoryTags.forEach(tag => tag.classList.remove('active'));
                     if (categoryTags.length > 0) {
-                        categoryTags[0].classList.add('active'); // Activate "All" tag
+                        categoryTags[0].classList.add('active');
                     }
                     loadInitialMovies();
                 }
             }, 500);
         });
         
-        // Handle Enter key
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -72,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Category filter
     if (categoryTags.length > 0) {
         categoryTags.forEach(tag => {
             tag.addEventListener('click', () => {
@@ -80,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 categoryTags.forEach(t => t.classList.remove('active'));
                 tag.classList.add('active');
                 
-                // Clear search
                 if (searchInput) {
                     searchInput.value = '';
                 }
@@ -102,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Load More button
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', () => {
             if (currentSearchQuery) {
@@ -117,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Handle movie card clicks
     movieGallery.addEventListener('click', (e) => {
         const card = e.target.closest('.movie-card');
         if (card) {
@@ -129,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Load initial movies (mix of popular movies)
 async function loadInitialMovies() {
     currentPage = 1;
     currentSearchQuery = '';
@@ -144,8 +127,6 @@ async function loadInitialMovies() {
     movieGallery.innerHTML = '<div class="loading-message">Loading movies...</div>';
     isLoading = true;
     
-    // Try to load popular movies
-    // Using multiple search terms to get variety
     const searchPromises = DEFAULT_SEARCH_TERMS.slice(0, 3).map(term => 
         searchMoviesAPI(term, 1)
     );
@@ -160,14 +141,11 @@ async function loadInitialMovies() {
             }
         });
         
-        // Remove duplicates and get first 15 unique movies
         const uniqueMovies = removeDuplicates(combinedMovies);
         allMovies = uniqueMovies.slice(0, 15);
         
-        // Load details for each movie
         await loadMovieDetails(allMovies);
         
-        // Check if we can load more
         hasMoreMovies = combinedMovies.length >= 15;
         
         updateLoadMoreButton();
@@ -179,7 +157,6 @@ async function loadInitialMovies() {
     }
 }
 
-// Load trending movies (new and popular - high rated and recent)
 async function loadTrendingMovies() {
     currentPage = 1;
     currentSearchQuery = '';
@@ -195,14 +172,12 @@ async function loadTrendingMovies() {
     isLoading = true;
     
     try {
-        // Search for recent popular movies (from 2020-2024)
         const currentYear = new Date().getFullYear();
         const years = [];
         for (let i = 0; i < 5; i++) {
             years.push(currentYear - i);
         }
         
-        // Search for popular movies from recent years
         const searchPromises = years.map(year => 
             searchMoviesAPI(year.toString(), 1)
         );
@@ -216,14 +191,11 @@ async function loadTrendingMovies() {
             }
         });
         
-        // Remove duplicates
         const uniqueMovies = removeDuplicates(combinedMovies);
         
-        // Get first 15 movies and load their details to filter by rating
         const moviesToLoad = uniqueMovies.slice(0, 20);
         await loadMovieDetails(moviesToLoad);
         
-        // Filter movies with rating >= 7.5 or from last 2 years
         const trendingMovies = moviesToLoad.filter(movie => {
             const detail = movieDetailsCache[movie.imdbID];
             if (detail && detail.Response === 'True') {
@@ -234,7 +206,6 @@ async function loadTrendingMovies() {
             return false;
         });
         
-        // Sort by rating (descending) and take top 15
         trendingMovies.sort((a, b) => {
             const ratingA = parseFloat(movieDetailsCache[a.imdbID]?.imdbRating || 0);
             const ratingB = parseFloat(movieDetailsCache[b.imdbID]?.imdbRating || 0);
@@ -243,7 +214,6 @@ async function loadTrendingMovies() {
         
         allMovies = trendingMovies.slice(0, 15);
         
-        // Clear gallery and show only trending movies
         movieGallery.innerHTML = '';
         allMovies.forEach(movie => {
             const detail = movieDetailsCache[movie.imdbID];
@@ -264,7 +234,6 @@ async function loadTrendingMovies() {
     }
 }
 
-// Load movies by genre
 async function loadMoviesByGenre(genre) {
     currentPage = 1;
     currentSearchQuery = '';
@@ -280,7 +249,6 @@ async function loadMoviesByGenre(genre) {
     isLoading = true;
     
     try {
-        // Map genre to search term
         const searchTerm = GENRE_MAP[genre] || genre.toLowerCase();
         const result = await searchMoviesAPI(searchTerm, currentPage);
         
@@ -288,10 +256,8 @@ async function loadMoviesByGenre(genre) {
             allMovies = result.Search.slice(0, 15);
             hasMoreMovies = parseInt(result.totalResults) > allMovies.length;
             
-            // Load details for each movie
             await loadMovieDetails(allMovies);
             
-            // Filter by genre in the details (some movies might not match)
             const genreFiltered = [];
             for (const movie of allMovies) {
                 const detail = movieDetailsCache[movie.imdbID];
@@ -321,7 +287,6 @@ async function loadMoviesByGenre(genre) {
     }
 }
 
-// Load more trending movies
 async function loadMoreTrendingMovies() {
     if (isLoading || !hasMoreMovies) return;
     
@@ -334,14 +299,11 @@ async function loadMoreTrendingMovies() {
         loadMoreBtn.disabled = true;
     }
     
-    // For trending, we'll load more from recent years
-    // This is a simplified approach - in a real app you might use a different strategy
-    hasMoreMovies = false; // Disable after first load for trending
+    hasMoreMovies = false;
     updateLoadMoreButton();
     isLoading = false;
 }
 
-// Load more movies by genre
 async function loadMoreMoviesByGenre() {
     if (isLoading || !hasMoreMovies || !currentGenre) return;
     
@@ -362,10 +324,8 @@ async function loadMoreMoviesByGenre() {
             const newMovies = result.Search;
             allMovies.push(...newMovies);
             
-            // Load details for new movies
             await loadMovieDetails(newMovies);
             
-            // Filter by genre
             const genreFiltered = [];
             for (const movie of newMovies) {
                 const detail = movieDetailsCache[movie.imdbID];
@@ -379,7 +339,6 @@ async function loadMoreMoviesByGenre() {
                 }
             }
             
-            // Check if we have more movies
             const totalResults = parseInt(result.totalResults);
             hasMoreMovies = allMovies.length < totalResults;
         } else {
@@ -393,7 +352,6 @@ async function loadMoreMoviesByGenre() {
     }
 }
 
-// Search movies
 async function searchMovies(query) {
     if (isLoading) return;
     
@@ -404,11 +362,10 @@ async function searchMovies(query) {
     allMovies = [];
     hasMoreMovies = true;
     
-    // Reset category tags
     const categoryTags = document.querySelectorAll('.category-tag');
     categoryTags.forEach(tag => tag.classList.remove('active'));
     if (categoryTags.length > 0) {
-        categoryTags[0].classList.add('active'); // Activate "All" tag
+        categoryTags[0].classList.add('active');
     }
     
     const movieGallery = document.querySelector('.movie-gallery');
@@ -424,7 +381,6 @@ async function searchMovies(query) {
             allMovies = result.Search;
             hasMoreMovies = parseInt(result.totalResults) > allMovies.length;
             
-            // Load details for each movie
             await loadMovieDetails(allMovies);
             
             updateLoadMoreButton();
@@ -441,7 +397,6 @@ async function searchMovies(query) {
     }
 }
 
-// Load more movies (for initial load)
 async function loadMoreMovies() {
     if (isLoading || !hasMoreMovies) return;
     
@@ -455,7 +410,6 @@ async function loadMoreMovies() {
     }
     
     try {
-        // Try different search terms to get more movies
         const searchTerm = DEFAULT_SEARCH_TERMS[(currentPage - 1) % DEFAULT_SEARCH_TERMS.length];
         const result = await searchMoviesAPI(searchTerm, currentPage);
         
@@ -466,11 +420,9 @@ async function loadMoreMovies() {
             
             allMovies.push(...newMovies);
             
-            // Load details for new movies
             await loadMovieDetails(newMovies);
             
-            // Check if we have more movies
-            hasMoreMovies = newMovies.length > 0 && allMovies.length < 50; // Limit to 50 movies
+            hasMoreMovies = newMovies.length > 0 && allMovies.length < 50;
         } else {
             hasMoreMovies = false;
         }
@@ -482,7 +434,6 @@ async function loadMoreMovies() {
     }
 }
 
-// Load more search results
 async function loadMoreSearchResults() {
     if (isLoading || !hasMoreMovies || !currentSearchQuery) return;
     
@@ -502,10 +453,8 @@ async function loadMoreSearchResults() {
             const newMovies = result.Search;
             allMovies.push(...newMovies);
             
-            // Load details for new movies
             await loadMovieDetails(newMovies);
             
-            // Check if we have more movies
             const totalResults = parseInt(result.totalResults);
             hasMoreMovies = allMovies.length < totalResults;
         } else {
@@ -519,12 +468,9 @@ async function loadMoreSearchResults() {
     }
 }
 
-// Search movies API call
 async function searchMoviesAPI(searchQuery, page = 1) {
-    // For demo, if no API key is set, use a fallback approach
     if (OMDB_API_KEY === 'your_api_key_here') {
         console.warn('OMDb API key not set. Please get a free API key from https://www.omdbapi.com/apikey.aspx');
-        // Return empty result or use mock data
         return { Response: 'False', Error: 'API key required' };
     }
     
@@ -544,9 +490,7 @@ async function searchMoviesAPI(searchQuery, page = 1) {
     }
 }
 
-// Get movie details by imdbID
 async function getMovieDetails(imdbID) {
-    // Check cache first
     if (movieDetailsCache[imdbID]) {
         return movieDetailsCache[imdbID];
     }
@@ -566,7 +510,6 @@ async function getMovieDetails(imdbID) {
         const data = await response.json();
         
         if (data.Response === 'True') {
-            // Cache the result
             movieDetailsCache[imdbID] = data;
             return data;
         }
@@ -578,43 +521,36 @@ async function getMovieDetails(imdbID) {
     }
 }
 
-// Load details for multiple movies
 async function loadMovieDetails(movies) {
     const movieGallery = document.querySelector('.movie-gallery');
     if (!movieGallery) return;
     
-    // Remove loading message if exists
     const loadingMsg = movieGallery.querySelector('.loading-message');
     if (loadingMsg) {
         loadingMsg.remove();
     }
     
-    // Load details for each movie (in batches to avoid too many requests)
     const batchSize = 5;
     for (let i = 0; i < movies.length; i += batchSize) {
         const batch = movies.slice(i, i + batchSize);
         const detailPromises = batch.map(movie => getMovieDetails(movie.imdbID));
         const details = await Promise.all(detailPromises);
         
-        // Create movie cards
         batch.forEach((movie, index) => {
             const detail = details[index];
             if (detail && detail.Response === 'True') {
                 createMovieCard(detail, movieGallery);
             } else {
-                // Fallback to basic info if details not available
                 createMovieCardFromSearch(movie, movieGallery);
             }
         });
         
-        // Small delay between batches to avoid rate limiting
         if (i + batchSize < movies.length) {
             await new Promise(resolve => setTimeout(resolve, 200));
         }
     }
 }
 
-// Create movie card from detailed movie data
 function createMovieCard(movie, container) {
     const card = document.createElement('div');
     card.className = 'movie-card';
@@ -667,7 +603,6 @@ function createMovieCard(movie, container) {
     container.appendChild(card);
 }
 
-// Create movie card from search result (basic info)
 function createMovieCardFromSearch(movie, container) {
     const card = document.createElement('div');
     card.className = 'movie-card';
@@ -704,13 +639,11 @@ function createMovieCardFromSearch(movie, container) {
     container.appendChild(card);
 }
 
-// Parse genres from comma-separated string
 function parseGenres(genreString) {
     if (!genreString || genreString === 'N/A') return ['Movie'];
     return genreString.split(',').map(g => g.trim());
 }
 
-// Remove duplicate movies
 function removeDuplicates(movies) {
     const seen = new Set();
     return movies.filter(movie => {
@@ -722,7 +655,6 @@ function removeDuplicates(movies) {
     });
 }
 
-// Update Load More button
 function updateLoadMoreButton() {
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     if (loadMoreBtn) {
@@ -739,7 +671,6 @@ function updateLoadMoreButton() {
     }
 }
 
-// Show error message
 function showErrorMessage(message) {
     const movieGallery = document.querySelector('.movie-gallery');
     if (movieGallery) {
@@ -755,6 +686,5 @@ function showErrorMessage(message) {
     }
 }
 
-// Export function to get movie details (for use in booking.js)
 window.getMovieDetailsByImdbId = getMovieDetails;
 

@@ -6,7 +6,6 @@ const imdbId = urlParams.get('imdbId');
 const showtime = urlParams.get('showtime');
 const seats = urlParams.get('seats');
 
-// Legacy movie data for backward compatibility
 const movieData = {
     'inception': {
         title: 'Inception',
@@ -50,7 +49,6 @@ const movieData = {
     }
 };
 
-// Load movie data from API if imdbId is provided
 async function loadMovieData() {
     const titleEl = document.getElementById('movieTitleSmall');
     const genreEl = document.getElementById('movieGenreSmall');
@@ -59,7 +57,6 @@ async function loadMovieData() {
     if (!titleEl || !genreEl || !posterEl) return;
     
     if (imdbId) {
-        // Try to get from API (config.js should be loaded before this)
         if (typeof OMDB_API_KEY !== 'undefined' && OMDB_API_KEY !== 'your_api_key_here' && typeof OMDB_BASE_URL !== 'undefined') {
             try {
                 const url = `${OMDB_BASE_URL}?apikey=${OMDB_API_KEY}&i=${imdbId}`;
@@ -81,7 +78,6 @@ async function loadMovieData() {
             }
         }
         
-        // Fallback
         titleEl.textContent = 'Movie';
         genreEl.textContent = 'Movie';
         posterEl.src = 'https://via.placeholder.com/150x200?text=No+Poster';
@@ -118,11 +114,9 @@ if (seats) {
     }
 }
 
-// Set booking date (default to today, but can be modified for future dates)
-// For now, we'll use a date 3 days from today as default show date
 const today = new Date();
 const showDate = new Date(today);
-showDate.setDate(today.getDate() + 3); // Show date is 3 days from today
+showDate.setDate(today.getDate() + 3);
 const options = { year: 'numeric', month: 'short', day: 'numeric' };
 document.getElementById('bookingDate').textContent = showDate.toLocaleDateString('en-US', options);
 
@@ -179,7 +173,6 @@ paymentForm.addEventListener('submit', (e) => {
     const movieGenre = document.getElementById('movieGenreSmall').textContent;
     const moviePoster = document.getElementById('moviePosterSmall').src;
     
-    // Save ticket to localStorage
     const ticket = {
         id: Date.now().toString(),
         movieTitle: movieTitle,
@@ -194,7 +187,6 @@ paymentForm.addEventListener('submit', (e) => {
         bookingDate: new Date().toISOString()
     };
     
-    // Get existing tickets
     const existingTickets = JSON.parse(localStorage.getItem('userTickets') || '[]');
     existingTickets.push(ticket);
     localStorage.setItem('userTickets', JSON.stringify(existingTickets));

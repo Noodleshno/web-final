@@ -1,6 +1,3 @@
-// OMDb API Configuration is loaded from config.js
-
-// Legacy movie data for backward compatibility
 const movieData = {
     'inception': {
         title: 'Inception',
@@ -84,7 +81,6 @@ const movieData = {
     }
 };
 
-// Get movie details from OMDb API
 async function getMovieDetailsFromAPI(imdbID) {
     if (OMDB_API_KEY === 'your_api_key_here') {
         return null;
@@ -111,7 +107,6 @@ async function getMovieDetailsFromAPI(imdbID) {
     }
 }
 
-// Format runtime from "148 min" to "2h 28m"
 function formatRuntime(runtime) {
     if (!runtime || runtime === 'N/A') return 'N/A';
     const minutes = parseInt(runtime);
@@ -124,21 +119,18 @@ function formatRuntime(runtime) {
     return `${mins} min`;
 }
 
-// Parse genres from comma-separated string
 function parseGenres(genreString) {
     if (!genreString || genreString === 'N/A') return ['Movie'];
     return genreString.split(',').map(g => g.trim());
 }
 
-// Load and display movie data
 const urlParams = new URLSearchParams(window.location.search);
 const imdbId = urlParams.get('imdbId');
-const movieId = urlParams.get('movie'); // Legacy support
+const movieId = urlParams.get('movie');
 
 let currentMovieId = imdbId || movieId;
 let currentImdbId = imdbId;
 
-// Load movie data
 async function loadMovieData() {
     const posterEl = document.getElementById('moviePoster');
     const titleEl = document.getElementById('movieTitle');
@@ -151,7 +143,6 @@ async function loadMovieData() {
     
     let movie = null;
     
-    // Try to get from API if imdbId is provided
     if (imdbId) {
         movie = await getMovieDetailsFromAPI(imdbId);
         if (movie && movie.Response === 'True') {
@@ -159,16 +150,13 @@ async function loadMovieData() {
         }
     }
     
-    // Fallback to legacy movieData if API fails or movieId is used
     if (!movie && movieId && movieData[movieId]) {
         movie = movieData[movieId];
         currentImdbId = movie.imdbID || movieId;
     }
     
     if (movie) {
-        // Handle API response format
         if (movie.Response === 'True') {
-            // API response
             if (posterEl) {
                 posterEl.src = (movie.Poster && movie.Poster !== 'N/A') ? movie.Poster : 'https://via.placeholder.com/400x600?text=No+Poster';
                 posterEl.alt = movie.Title;
@@ -196,7 +184,6 @@ async function loadMovieData() {
             
             document.title = `${movie.Title} - Book Tickets - Cinemaholic`;
         } else {
-            // Legacy format
             if (posterEl) {
                 posterEl.src = movie.poster;
                 posterEl.alt = movie.title;
@@ -221,13 +208,11 @@ async function loadMovieData() {
             document.title = `${movie.title} - Book Tickets - Cinemaholic`;
         }
     } else {
-        // Show error message
         if (titleEl) titleEl.textContent = 'Movie not found';
         if (synopsisEl) synopsisEl.textContent = 'Unable to load movie details. Please try again later.';
     }
 }
 
-// Load movie when page loads
 loadMovieData();
 
 const showtimeBtns = document.querySelectorAll('.showtime-btn');
@@ -247,7 +232,6 @@ const bookBtn = document.querySelector('.book-ticket-btn');
 if (bookBtn) {
     bookBtn.addEventListener('click', () => {
         if (selectedShowtime) {
-            // Use imdbId if available, otherwise fall back to movieId
             const movieIdentifier = currentImdbId || currentMovieId;
             if (imdbId) {
                 window.location.href = `seats.html?imdbId=${currentImdbId}&showtime=${encodeURIComponent(selectedShowtime)}`;
