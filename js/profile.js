@@ -16,6 +16,30 @@ const defaultProfile = {
     profilePicture: DEFAULT_AVATAR
 };
 
+const BACKUP_STORAGE_KEY = 'cineholicProfileBackup';
+
+function clearFieldError(input) {
+    if (!input) return;
+    const errorEl = input.closest('.form-field')?.querySelector('.input-error');
+    if (errorEl) errorEl.textContent = '';
+    input.removeAttribute('aria-invalid');
+}
+
+function setFieldError(input, message) {
+    if (!input) return;
+    const errorEl = input.closest('.form-field')?.querySelector('.input-error');
+    if (errorEl) errorEl.textContent = message;
+    input.setAttribute('aria-invalid', 'true');
+}
+
+function clearAllProfileErrors() {
+    const form = document.getElementById('profileForm');
+    if (!form) return;
+    form.querySelectorAll('input').forEach((inp) => clearFieldError(inp));
+    const upErr = document.querySelector('.input-error[data-error-for="profilePicture"]');
+    if (upErr) upErr.textContent = '';
+}
+
 function getCurrentUserEmail() {
     const raw = localStorage.getItem(CURRENT_USER_KEY);
     if (!raw) return null;
@@ -154,23 +178,46 @@ document.addEventListener('DOMContentLoaded', () => {
     profileForm && profileForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        clearAllProfileErrors();
+
+        const fullNameEl = document.getElementById('fullName');
+        const emailEl = document.getElementById('email');
+        const phoneEl = document.getElementById('phone');
+
         const profileData = {
-            fullName: document.getElementById('fullName').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
+            fullName: fullNameEl.value.trim(),
+            email: emailEl.value.trim(),
+            phone: phoneEl.value.trim(),
             profilePicture: currentProfilePicture
         };
 
-        if (!profileData.fullName || !profileData.email) {
-            alert('Please fill in all required fields (Name and Email)');
-            return;
+        let isValid = true;
+
+        if (!profileData.fullName) {
+            setFieldError(fullNameEl, 'Please enter your name');
+            isValid = false;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(profileData.email)) {
-            alert('Please enter a valid email address');
-            return;
+        if (!profileData.email) {
+            setFieldError(emailEl, 'Please enter your email');
+            isValid = false;
+        } else {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(profileData.email)) {
+                setFieldError(emailEl, 'Please enter a valid email address');
+                isValid = false;
+            }
         }
+
+        if (profileData.phone) {
+            const phoneRegex = /^\+?\d{7,15}$/;
+            if (!phoneRegex.test(profileData.phone)) {
+                setFieldError(phoneEl, 'Please enter a valid phone number (e.g. +71234567890)');
+                isValid = false;
+            }
+        }
+
+        if (!isValid) return;
 
         const email = getCurrentUserEmail();
         if (email) {
@@ -257,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 updateProfilePicture(base64Image);
             } catch (error) {
-                alert(error.message || 'Error uploading image. Please try again.');
+                const upErr = document.querySelector('.input-error[data-error-for="profilePicture"]');
+                if (upErr) upErr.textContent = (error && error.message) ? error.message : 'Error uploading image. Please try again.';
             }
         }
     });
@@ -297,10 +345,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 updateProfilePicture(base64Image);
             } catch (error) {
-                alert(error.message || 'Error uploading image. Please try again.');
+                const upErr = document.querySelector('.input-error[data-error-for="profilePicture"]');
+                if (upErr) upErr.textContent = (error && error.message) ? error.message : 'Error uploading image. Please try again.';
             }
         } else {
-            alert('Please drop an image file');
+            const upErr = document.querySelector('.input-error[data-error-for="profilePicture"]');
+            if (upErr) upErr.textContent = 'Please drop an image file';
         }
     });
 
