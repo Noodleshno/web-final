@@ -1,18 +1,24 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+
+
+
     function sanitizeAbsoluteImagePaths() {
         try {
             const imgs = Array.from(document.querySelectorAll('img'));
             imgs.forEach((img) => {
-                const src = img.getAttribute('src') || '';
+                const src = img.getAttribute('src') || '';
+
                 if (/^[A-Za-z]:\\/.test(src) || src.startsWith('file:') || src.startsWith('\\\\')) {
                     console.info('Sanitized absolute image src on auth page:', src);
                     img.setAttribute('src', 'images/favicon.png');
                 }
             });
-        } catch (e) {
+        } catch (e) {
+
             console.debug('sanitizeAbsoluteImagePaths failed', e);
         }
-    }
+    }
+
     sanitizeAbsoluteImagePaths();
     const MODE = {
         SIGN_IN: 'signin',
@@ -64,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function ensureProfileSeed(user) {
-        try {
+        try {
+
             const profilesRaw = localStorage.getItem(PROFILES_STORAGE_KEY);
             let profiles = {};
             try { profiles = profilesRaw ? JSON.parse(profilesRaw) : {}; } catch (e) { profiles = {}; }
@@ -77,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const merged = {
                 fullName: user.fullName || (existing && existing.fullName) || '',
                 email: user.email || (existing && existing.email) || '',
-                phone: user.phone || (existing && existing.phone) || '',
+                phone: user.phone || (existing && existing.phone) || '',
+
                 profilePicture: (existing && existing.profilePicture) || null
             };
 
@@ -373,7 +381,8 @@ document.addEventListener('DOMContentLoaded', () => {
     signUpForm.addEventListener('submit', handleSignUpSubmit);
     signInForm.addEventListener('submit', handleSignInSubmit);
     forgotPasswordBtn.addEventListener('click', handleForgotPassword);
-    guestAccessBtn.addEventListener('click', handleGuestAccess);
+    guestAccessBtn.addEventListener('click', handleGuestAccess);
+
     const urlParams = new URLSearchParams(window.location.search);
     const initialMode = urlParams.get('mode');
     if (initialMode === MODE.SIGN_IN) {

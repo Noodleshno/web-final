@@ -221,7 +221,8 @@ async function loadTickets() {
             const ticketHTML = createTicketCard(ticket, true);
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = ticketHTML;
-            const appended = tempDiv.firstElementChild;
+            const appended = tempDiv.firstElementChild;
+
             if (appended) {
                 appended.dataset.ticketId = ticket.id || '';
                 appended.dataset.ticketTotal = ticket.total || '';
@@ -266,13 +267,15 @@ async function loadTickets() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadTickets();
+    loadTickets();
+
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('.view-ticket-btn');
         if (!btn) return;
 
         const card = btn.closest('.ticket-card');
-        if (!card) return;
+        if (!card) return;
+
         const movieTitle = card.dataset.movieTitle || card.querySelector('h3')?.textContent || 'Movie';
         const date = card.dataset.ticketDate || card.querySelector('.detail-item .detail-value')?.textContent || '';
         const time = card.dataset.ticketTime || Array.from(card.querySelectorAll('.detail-item')).find(d => d.querySelector('.detail-label')?.textContent === 'Time')?.querySelector('.detail-value')?.textContent || '';

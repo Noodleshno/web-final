@@ -1,6 +1,7 @@
 
 const PROFILES_STORAGE_KEY = 'cineholicProfiles'; 
-const CURRENT_USER_KEY = 'cineholicCurrentUser';
+const CURRENT_USER_KEY = 'cineholicCurrentUser';
+
 const DEFAULT_AVATAR_SVG = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'>
   <rect width='100%' height='100%' fill='#e6e9ee'/>
   <circle cx='60' cy='40' r='24' fill='#cfd6e3'/>
@@ -34,14 +35,16 @@ function loadProfile() {
         try { profiles = profilesRaw ? JSON.parse(profilesRaw) : {}; } catch (e) { profiles = {}; }
 
         const profile = profiles[email];
-        if (profile) return profile;
+        if (profile) return profile;
+
         return {
             fullName: '',
             email: email,
             phone: '',
             profilePicture: DEFAULT_AVATAR
         };
-    }
+    }
+
     const savedProfile = localStorage.getItem('userProfile');
     if (savedProfile) {
         try { return JSON.parse(savedProfile); } catch (e) {  }
@@ -60,7 +63,8 @@ function saveProfile(profileData) {
         profiles[email] = profileData;
         localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(profiles));
         return;
-    }
+    }
+
     localStorage.setItem('userProfile', JSON.stringify(profileData));
 }
 
@@ -116,13 +120,16 @@ function imageToBase64(file) {
         reader.onerror = (e) => reject(e);
         reader.readAsDataURL(file);
     });
-}
+}
+
 function animateSaveSuccess(button) {
     if (!button) return;
     const originalHTML = button.innerHTML;
     button.disabled = true;
-    button.classList.add('save-success');
-    button.innerHTML = `<span class="material-symbols-outlined save-check">check_circle</span><span>Saved</span>`;
+    button.classList.add('save-success');
+
+    button.innerHTML = `<span class="material-symbols-outlined save-check">check_circle</span><span>Saved</span>`;
+
     setTimeout(() => {
         button.classList.remove('save-success');
         button.innerHTML = originalHTML;
@@ -130,7 +137,8 @@ function animateSaveSuccess(button) {
     }, 1400);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+
     let currentProfile = loadProfile();
     updateProfileUI(currentProfile);
 
@@ -162,12 +170,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!emailRegex.test(profileData.email)) {
             alert('Please enter a valid email address');
             return;
-        }
+        }
+
         const email = getCurrentUserEmail();
         if (email) {
             try {
                 const backupsRaw = sessionStorage.getItem(BACKUP_STORAGE_KEY);
-                const backups = backupsRaw ? JSON.parse(backupsRaw) : {};
+                const backups = backupsRaw ? JSON.parse(backupsRaw) : {};
+
                 const preSaved = loadProfile();
                 backups[email] = preSaved;
                 sessionStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(backups));
@@ -184,7 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateProfileUI(profileData);
 
-        if (profilePictureInput) profilePictureInput.value = '';
+        if (profilePictureInput) profilePictureInput.value = '';
+
         animateSaveSuccess(saveBtn);
     });
 
@@ -192,35 +203,42 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            const email = getCurrentUserEmail();
+            const email = getCurrentUserEmail();
+
             if (email) {
                 try {
                     const backupsRaw = sessionStorage.getItem(BACKUP_STORAGE_KEY);
                     const backups = backupsRaw ? JSON.parse(backupsRaw) : {};
                     const backup = backups[email];
-                    if (backup) {
-                        saveProfile(backup);
+                    if (backup) {
+
+                        saveProfile(backup);
+
                         delete backups[email];
                         sessionStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(backups));
 
                         currentProfile = backup;
                         currentProfilePicture = backup.profilePicture || DEFAULT_AVATAR;
                         updateProfileUI(currentProfile);
-                        if (profilePictureInput) profilePictureInput.value = '';
+                        if (profilePictureInput) profilePictureInput.value = '';
+
                         animateRevert(saveBtn);
                         console.log('[profile] restored backup for', email, backup);
                         return;
                     }
                 } catch (err) {
-                    console.error('[profile] error reading backups', err);
+                    console.error('[profile] error reading backups', err);
+
                 }
-            }
+            }
+
             const saved = loadProfile();
             currentProfile = saved;
             currentProfilePicture = saved && saved.profilePicture ? saved.profilePicture : DEFAULT_AVATAR;
 
             updateProfileUI(currentProfile);
-            if (profilePictureInput) profilePictureInput.value = '';
+            if (profilePictureInput) profilePictureInput.value = '';
+
             if (saveBtn) saveBtn.disabled = false;
         });
     }
