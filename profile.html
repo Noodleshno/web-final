@@ -14,7 +14,7 @@
             <span class="logo-text">Cinemaholic</span>
         </div>
         <ul class="nav-links">
-            <li><a href="main.html"><span class="material-symbols-outlined">home</span> Home</a></li>
+            <li><a href="index.html"><span class="material-symbols-outlined">home</span> Home</a></li>
             <li><a href="movies.html"><span class="material-symbols-outlined">movie</span> Movies</a></li>
             <li><a href="tickets.html"><span class="material-symbols-outlined">confirmation_number</span> My Tickets</a></li>
             <li><a href="profile.html" class="active"><span class="material-symbols-outlined">account_circle</span> Profile</a></li>
@@ -62,6 +62,7 @@
                         <span class="material-symbols-outlined">person</span>
                         <input type="text" id="fullName" placeholder="John Doe" required>
                     </div>
+                    <p class="input-error" data-error-for="fullName"></p>
                 </div>
 
                 <div class="form-field">
@@ -70,6 +71,7 @@
                         <span class="material-symbols-outlined">mail</span>
                         <input type="email" id="email" placeholder="john.doe@cinemaholic.com" required>
                     </div>
+                    <p class="input-error" data-error-for="email"></p>
                 </div>
 
                 <div class="form-field">
@@ -78,6 +80,7 @@
                         <span class="material-symbols-outlined">call</span>
                         <input type="tel" id="phone" placeholder="+7 777 777 7777">
                     </div>
+                    <p class="input-error" data-error-for="phone"></p>
                 </div>
 
                 <div class="form-field">
@@ -88,6 +91,7 @@
                         <img id="profilePreview" alt="Profile preview">
                         <p id="uploadText">Click to upload or drag and drop</p>
                         <small>PNG, JPG or GIF (max. 5MB)</small>
+                        <p class="input-error" data-error-for="profilePicture"></p>
                     </div>
                 </div>
 

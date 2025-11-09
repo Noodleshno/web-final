@@ -212,12 +212,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!password) {
             setFieldError(passwordInput, 'Please enter a password');
             isValid = false;
-        } else if (password.length < 6) {
-            setFieldError(passwordInput, 'Password must be at least 6 characters long');
-            isValid = false;
+        } else {
+            const pwdRegex = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}/;
+            if (!pwdRegex.test(password)) {
+                setFieldError(passwordInput, 'Password must be at least 8 characters and include at least one letter and one number');
+                isValid = false;
+            }
         }
 
-        const confirmPassword = confirmPasswordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
         if (!confirmPassword) {
             setFieldError(confirmPasswordInput, 'Please confirm your password');
             isValid = false;
@@ -230,6 +233,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (email && users.some((user) => user.email === email)) {
             setFieldError(emailInput, 'An account with this email already exists');
             isValid = false;
+        }
+
+        const phone = phoneInput ? phoneInput.value.trim() : '';
+        if (phone) {
+            const phoneRegex = /^\+?\d{7,15}$/;
+            if (!phoneRegex.test(phone)) {
+                setFieldError(phoneInput, 'Please enter a valid phone number (e.g. +71234567890)');
+                isValid = false;
+            }
         }
 
         if (!isValid) {
@@ -257,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         signUpForm.reset();
 
         setTimeout(() => {
-            window.location.href = 'main.html';
+            window.location.href = 'index.html';
         }, 1400);
     }
 
@@ -309,10 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setCurrentUser(user);
         ensureProfileSeed(user);
-        displayMessage('success', 'Welcome back! Taking you to the homepage...');
+        displayMessage('success', 'Welcome back! Taking you to your profile...');
 
         setTimeout(() => {
-            window.location.href = 'main.html';
+            window.location.href = 'profile.html';
         }, 1100);
     }
 
