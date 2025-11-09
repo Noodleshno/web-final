@@ -1245,6 +1245,28 @@ body.dark-mode .upload-box small {
   color: #666;
 }
 
+#profilePreview {
+  display: none;
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 12px;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode #profilePreview {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#avatarImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: none;
+}
+
 .form-actions {
   display: flex;
   gap: 1rem;
